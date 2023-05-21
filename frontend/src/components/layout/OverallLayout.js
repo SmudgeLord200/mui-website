@@ -15,7 +15,7 @@ import { useState, useRef } from 'react';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import Drawer from '@mui/material/Drawer';
-import { MenuList, MenuItem, ListItemText, List, Divider, ListItemButton, ListItem } from "@mui/material";
+import { MenuList, MenuItem, ListItemText, List, Divider, ListItemButton, ListItem, ListItemIcon } from "@mui/material";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from '@emotion/styled';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -27,6 +27,17 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ScrollToTop from './ScrollToTop';
 import PropTypes from 'prop-types';
 import useLocales from '../../hooks/useLocales';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import SendIcon from '@mui/icons-material/Send';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
 
 const useStyles = styled((theme) => ({
     toolBar: {
@@ -70,8 +81,13 @@ const MainLayout = (props) => {
     const { t, allLang, onChangeLang } = useLocales();
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [scrollTarget, setScrollTarget] = useState(undefined);
+
+    const languageAnchorRef = useRef(null); //Popper anchorRef of language button
     const [openLanBtn, setOpenLanBtn] = useState(false);
-    const anchorRef = useRef(null); //Popper anchorRef
+
+    const discographyAnchorRef = useRef(null); //Popper anchorRef of discography button
+    const [openDisBtn, setOpenDisBtn] = useState(false);
+
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -90,11 +106,21 @@ const MainLayout = (props) => {
         setOpenLanBtn((prevOpen) => !prevOpen);
     };
     const handleCloseLanBtn = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+        if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
             return;
         }
         setOpenLanBtn(false);
     };
+
+    const handleToggleDisBtn = () => {
+        setOpenDisBtn((prevOpen) => !prevOpen);
+    };
+    const handleCloseDisBtn = (event) => {
+        if (discographyAnchorRef.current && discographyAnchorRef.current.contains(event.target)) {
+            return;
+        }
+        setOpenDisBtn(false);
+    }
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -108,6 +134,12 @@ const MainLayout = (props) => {
         navigate(val);
     }
 
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
@@ -115,11 +147,12 @@ const MainLayout = (props) => {
             </Typography>
             <Divider />
             <ButtonGroup variant="text" orientation="vertical">
-                <Button color="inherit" onClick={() => onNavigate("/")}>Home</Button>
+                <Button color="inherit" onClick={() => onNavigate("/")}>{t("Home")}</Button>
                 <Button color="inherit" onClick={() => onNavigate("/about")}>About</Button>
                 <Button color="inherit" onClick={() => onNavigate("/movies")}>Movies</Button>
                 <Button color="inherit" onClick={() => onNavigate("/music")}>Music</Button>
-                <Button color="inherit">Language</Button>
+
+                <Typography>Language</Typography>
                 <MenuList>
                     {allLang.map((option) => (
                         <MenuItem
@@ -176,7 +209,7 @@ const MainLayout = (props) => {
                                     </Typography>
                                 </IconButton>
 
-                                {isMobile ?
+                                {isMobile &&
                                     <>
                                         <IconButton
                                             color="inherit"
@@ -186,8 +219,7 @@ const MainLayout = (props) => {
                                             sx={{ mr: 2, }}
                                         >
                                             <MenuIcon />
-                                        </IconButton>
-                                        <Drawer
+                                        </IconButton><Drawer
                                             container={container}
                                             variant="temporary"
                                             open={mobileOpen}
@@ -200,55 +232,81 @@ const MainLayout = (props) => {
                                             {drawer}
                                         </Drawer>
                                     </>
-                                    :
-                                    <>
-                                        <ButtonGroup variant="text">
-                                            <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>Home</Button>
-                                            <Button color="inherit" onClick={() => onNavigate("/about")} style={{ padding: "0px 10px" }}>About</Button>
-                                            <Button color="inherit" onClick={() => onNavigate("/movies")} style={{ padding: "0px 10px" }}>Movies</Button>
-                                            <Button color="inherit" onClick={() => onNavigate("/music")} style={{ padding: "0px 10px" }}>Music</Button>
+                                }
+                                {!isMobile &&
+                                    <ButtonGroup variant="text">
+                                        <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>{t("Home")}</Button>
+                                        <Button color="inherit" onClick={() => onNavigate("/about")} style={{ padding: "0px 10px" }}>About</Button>
 
-                                            <Button
-                                                ref={anchorRef}
-                                                id="composition-button"
-                                                aria-controls={openLanBtn ? 'composition-menu' : undefined}
-                                                aria-expanded={openLanBtn ? 'true' : undefined}
-                                                aria-haspopup="true"
-                                                color="inherit"
-                                                onClick={handleToggleLanBtn}
+                                        <Button
+                                            ref={discographyAnchorRef}
+                                            id="composition-button-0"
+                                            aria-controls={openDisBtn ? 'composition-menu' : undefined}
+                                            aria-expanded={openDisBtn ? 'true' : undefined}
+                                            aria-haspopup="true"
+                                            color="inherit"
+                                            onClick={handleToggleDisBtn}
+                                        >
+                                            Discography
+                                            <Popper
+                                                open={openDisBtn}
+                                                anchorEl={discographyAnchorRef.current}
+                                                role={undefined}
+                                                placement="bottom"
                                             >
-                                                <LanguageIcon />
-                                                <Popper
-                                                    open={openLanBtn}
-                                                    anchorEl={anchorRef.current}
-                                                    role={undefined}
-                                                    placement="bottom"
-                                                >
-                                                    <ClickAwayListener onClickAway={handleCloseLanBtn}>
-                                                        <MenuList
-                                                            open={openLanBtn}
-                                                            onClose={handleCloseLanBtn}
-                                                            style={{ backgroundColor: 'white', borderRadius: 5 }}
-                                                        >
-                                                            {allLang.map((option) => (
-                                                                <MenuItem
-                                                                    key={option.value}
-                                                                    onClick={() => handleChangeLang(option)}
-                                                                    sx={{ py: 2, px: 2.5 }}
+                                                <ClickAwayListener onClickAway={handleCloseDisBtn}>
+                                                    <MenuList
+                                                        open={openDisBtn}
+                                                        onClose={handleCloseDisBtn}
+                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                                    >
+                                                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
+                                                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Popper>
+                                        </Button>
+
+                                        <Button
+                                            ref={languageAnchorRef}
+                                            id="composition-button-1"
+                                            aria-controls={openLanBtn ? 'composition-menu' : undefined}
+                                            aria-expanded={openLanBtn ? 'true' : undefined}
+                                            aria-haspopup="true"
+                                            color="inherit"
+                                            onClick={handleToggleLanBtn}
+                                        >
+                                            <LanguageIcon />
+                                            <Popper
+                                                open={openLanBtn}
+                                                anchorEl={languageAnchorRef.current}
+                                                role={undefined}
+                                                placement="bottom"
+                                            >
+                                                <ClickAwayListener onClickAway={handleCloseLanBtn}>
+                                                    <MenuList
+                                                        open={openLanBtn}
+                                                        onClose={handleCloseLanBtn}
+                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                                    >
+                                                        {allLang.map((option) => (
+                                                            <MenuItem
+                                                                key={option.value}
+                                                                onClick={() => handleChangeLang(option)}
+                                                                sx={{ py: 2, px: 2.5 }}
+                                                            >
+                                                                <ListItemText
+                                                                    primaryTypographyProps={{ variant: 'body1' }}
                                                                 >
-                                                                    <ListItemText
-                                                                        primaryTypographyProps={{ variant: 'body1' }}
-                                                                    >
-                                                                        {option.label}
-                                                                    </ListItemText>
-                                                                </MenuItem>
-                                                            ))}
-                                                        </MenuList>
-                                                    </ClickAwayListener>
-                                                </Popper>
-                                            </Button>
-                                        </ButtonGroup>
-                                    </>
+                                                                    {option.label}
+                                                                </ListItemText>
+                                                            </MenuItem>
+                                                        ))}
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Popper>
+                                        </Button>
+                                    </ButtonGroup>
                                 }
 
                             </Toolbar>

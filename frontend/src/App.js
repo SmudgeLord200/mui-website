@@ -16,7 +16,7 @@ import LanguageContext from './context/LanguageContext';
 
 
 function App() {
-  const theme = createTheme();
+  const theme = createTheme(); //TOOD: change this
   const { t, allLang, enUS } = useLocales();
 
   const [langMode, setLangMode] = useState(

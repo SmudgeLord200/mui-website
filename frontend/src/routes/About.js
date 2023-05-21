@@ -6,6 +6,26 @@ import { getAboutInfo, selectAboutInfo } from '../stores/about';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+import TimelineDot from '@mui/lab/TimelineDot';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
+import HotelIcon from '@mui/icons-material/Hotel';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import AdbIcon from '@mui/icons-material/Adb';
+import styled from '@emotion/styled';
+
+const CustomizedTimelineContent = styled(TimelineContent)(({ theme }) => ({
+    backgroundColor: "#000",
+    color: "#fff",
+    padding: '12px 2px',
+    margin: '0px 10px',
+}))
 
 const About = () => {
     const dispatch = useDispatch();
@@ -27,23 +47,27 @@ const About = () => {
 
     return (
         <Container>
-            <Typography>About</Typography>
-            {aboutInfo.map((info, index) => {
-                return (
-                    // <Typography key={index}>{info.attributes.description}</Typography>
-                    <VerticalTimeline>
-                        <VerticalTimelineElement
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-                            date={info.attributes.date}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-                        >
-                            <Typography className="vertical-timeline-element-title">{info.attributes.description}</Typography>
-                        </VerticalTimelineElement>
-                    </VerticalTimeline>
-                )
-            })}
+            <Timeline position="alternate">
+                {aboutInfo.map((info, index) => {
+                    return (
+                        <TimelineItem key={index}>
+                            <TimelineSeparator sx={{ px: 1 }}>
+                                <TimelineConnector />
+                                <TimelineDot>
+                                    <AdbIcon />
+                                </TimelineDot>
+                                <TimelineConnector />
+                            </TimelineSeparator>
+                            <TimelineContent sx={{ py: '12px', px: 2, backgroundColor: '#000', color: '#fff', borderRadius: 40 }}>
+                                <Typography variant="h6" component="span">
+                                    {info.attributes.date}
+                                </Typography>
+                                <Typography>{info.attributes.description}</Typography>
+                            </TimelineContent>
+                        </TimelineItem>
+                    )
+                })}
+            </Timeline>
         </Container>
     )
 }
