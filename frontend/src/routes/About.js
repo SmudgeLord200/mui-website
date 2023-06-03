@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Stack, CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getAboutInfo, selectAboutInfo } from '../stores/about';
+import { getAboutInfo, getInfoLoading, selectAboutInfo } from '../stores/about';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -30,6 +30,7 @@ const CustomizedTimelineContent = styled(TimelineContent)(({ theme }) => ({
 const About = () => {
     const dispatch = useDispatch();
     const aboutInfo = useSelector(selectAboutInfo);
+    const aboutLoading = useSelector(getInfoLoading);
 
     useEffect(() => {
         async function getAbout() {
@@ -47,27 +48,35 @@ const About = () => {
 
     return (
         <Container>
-            <Timeline position="alternate">
-                {aboutInfo.map((info, index) => {
-                    return (
-                        <TimelineItem key={index}>
-                            <TimelineSeparator sx={{ px: 1 }}>
-                                <TimelineConnector />
-                                <TimelineDot>
-                                    <AdbIcon />
-                                </TimelineDot>
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent sx={{ py: '12px', px: 2, backgroundColor: '#000', color: '#fff', borderRadius: 40 }}>
-                                <Typography variant="h6" component="span">
-                                    {info.attributes.date}
-                                </Typography>
-                                <Typography>{info.attributes.description}</Typography>
-                            </TimelineContent>
-                        </TimelineItem>
-                    )
-                })}
-            </Timeline>
+            {aboutLoading &&
+                <Stack spacing={2} mt={2} alignItems="center" justifyContent="center">
+                    <CircularProgress />
+                </Stack>
+            }
+
+            {!aboutLoading &&
+                <Timeline position="alternate">
+                    {aboutInfo.map((info, index) => {
+                        return (
+                            <TimelineItem key={index}>
+                                <TimelineSeparator sx={{ px: 1 }}>
+                                    <TimelineConnector />
+                                    <TimelineDot>
+                                        <AdbIcon />
+                                    </TimelineDot>
+                                    <TimelineConnector />
+                                </TimelineSeparator>
+                                <TimelineContent sx={{ py: '12px', px: 2, backgroundColor: '#000', color: '#fff', borderRadius: 40 }}>
+                                    <Typography variant="h6" component="span">
+                                        {info.attributes.date}
+                                    </Typography>
+                                    <Typography>{info.attributes.description}</Typography>
+                                </TimelineContent>
+                            </TimelineItem>
+                        )
+                    })}
+                </Timeline>
+            }
         </Container>
     )
 }

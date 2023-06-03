@@ -67,8 +67,8 @@ const WrapperContentContainerDiv = styled('div')({
 
 const ContentDiv = styled('div')({
     flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
+    maxHeight: '100%',
+    overflowY: 'auto',
 })
 
 const drawerWidth = 150;
@@ -173,158 +173,171 @@ const MainLayout = (props) => {
     );
 
     return (
-        <RootDiv>
-            <WrapperDiv>
-                <WrapperContentContainerDiv>
-                    <ContentDiv
-                        ref={(node) => {
-                            if (node) {
-                                setScrollTarget(node);
-                            }
-                        }}>
-                        <div id="back-to-top-anchor" />
-                        <AppBar position='sticky'>
-                            <Toolbar style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
-                                <IconButton
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    edge="start"
-                                    onClick={() => onNavigate('/')}
+        // <RootDiv>
+        //     <WrapperDiv>
+        //         <WrapperContentContainerDiv>
+        <ContentDiv
+            ref={(node) => {
+                if (node) {
+                    setScrollTarget(node);
+                }
+            }}>
+            <div id="back-to-top-anchor" />
+            <AppBar position='sticky'>
+                <Toolbar style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={() => onNavigate('/')}
+                    >
+                        <AdbIcon sx={{ mr: 1, }} />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            sx={{
+                                mr: 2,
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            MUI
+                        </Typography>
+                    </IconButton>
+
+                    {isMobile &&
+                        <>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                edge="start"
+                                onClick={handleDrawerToggle}
+                                sx={{ mr: 2, }}
+                            >
+                                <MenuIcon />
+                            </IconButton><Drawer
+                                container={container}
+                                variant="temporary"
+                                open={mobileOpen}
+                                onClose={handleDrawerToggle}
+                                ModalProps={{
+                                    keepMounted: true, // Better open performance on mobile.
+                                }}
+                                sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 }, }}
+                            >
+                                {drawer}
+                            </Drawer>
+                        </>
+                    }
+
+                    {!isMobile &&
+                        <ButtonGroup variant="text">
+                            <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>{t("Home")}</Button>
+                            <Button color="inherit" onClick={() => onNavigate("/about")} style={{ padding: "0px 10px" }}>About</Button>
+
+                            <Button
+                                ref={discographyAnchorRef}
+                                id="composition-button-0"
+                                aria-controls={openDisBtn ? 'composition-menu' : undefined}
+                                aria-expanded={openDisBtn ? 'true' : undefined}
+                                aria-haspopup="true"
+                                color="inherit"
+                                onClick={handleToggleDisBtn}
+                            >
+                                Discography
+                                <Popper
+                                    open={openDisBtn}
+                                    anchorEl={discographyAnchorRef.current}
+                                    role={undefined}
+                                    placement="bottom"
                                 >
-                                    <AdbIcon sx={{ mr: 1, }} />
-                                    <Typography
-                                        variant="h6"
-                                        noWrap
-                                        component="a"
-                                        sx={{
-                                            mr: 2,
-                                            fontFamily: 'monospace',
-                                            fontWeight: 700,
-                                            letterSpacing: '.3rem',
-                                            color: 'inherit',
-                                            textDecoration: 'none',
-                                        }}
-                                    >
-                                        MUI
-                                    </Typography>
-                                </IconButton>
+                                    <ClickAwayListener onClickAway={handleCloseDisBtn}>
+                                        <MenuList
+                                            open={openDisBtn}
+                                            onClose={handleCloseDisBtn}
+                                            style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                        >
+                                            <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
+                                            <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
+                                            <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Concerts</MenuItem>
+                                            <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Podcasts</MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Popper>
+                            </Button>
 
-                                {isMobile &&
-                                    <>
-                                        <IconButton
-                                            color="inherit"
-                                            aria-label="open drawer"
-                                            edge="start"
-                                            onClick={handleDrawerToggle}
-                                            sx={{ mr: 2, }}
+                            <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>Photo Gallery</Button>
+                            
+                            <Button
+                                ref={languageAnchorRef}
+                                id="composition-button-1"
+                                aria-controls={openLanBtn ? 'composition-menu' : undefined}
+                                aria-expanded={openLanBtn ? 'true' : undefined}
+                                aria-haspopup="true"
+                                color="inherit"
+                                onClick={handleToggleLanBtn}
+                            >
+                                <LanguageIcon />
+                                <Popper
+                                    open={openLanBtn}
+                                    anchorEl={languageAnchorRef.current}
+                                    role={undefined}
+                                    placement="bottom"
+                                >
+                                    <ClickAwayListener onClickAway={handleCloseLanBtn}>
+                                        <MenuList
+                                            open={openLanBtn}
+                                            onClose={handleCloseLanBtn}
+                                            style={{ backgroundColor: 'white', borderRadius: 5 }}
                                         >
-                                            <MenuIcon />
-                                        </IconButton><Drawer
-                                            container={container}
-                                            variant="temporary"
-                                            open={mobileOpen}
-                                            onClose={handleDrawerToggle}
-                                            ModalProps={{
-                                                keepMounted: true, // Better open performance on mobile.
-                                            }}
-                                            sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 }, }}
-                                        >
-                                            {drawer}
-                                        </Drawer>
-                                    </>
-                                }
-                                {!isMobile &&
-                                    <ButtonGroup variant="text">
-                                        <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>{t("Home")}</Button>
-                                        <Button color="inherit" onClick={() => onNavigate("/about")} style={{ padding: "0px 10px" }}>About</Button>
-
-                                        <Button
-                                            ref={discographyAnchorRef}
-                                            id="composition-button-0"
-                                            aria-controls={openDisBtn ? 'composition-menu' : undefined}
-                                            aria-expanded={openDisBtn ? 'true' : undefined}
-                                            aria-haspopup="true"
-                                            color="inherit"
-                                            onClick={handleToggleDisBtn}
-                                        >
-                                            Discography
-                                            <Popper
-                                                open={openDisBtn}
-                                                anchorEl={discographyAnchorRef.current}
-                                                role={undefined}
-                                                placement="bottom"
-                                            >
-                                                <ClickAwayListener onClickAway={handleCloseDisBtn}>
-                                                    <MenuList
-                                                        open={openDisBtn}
-                                                        onClose={handleCloseDisBtn}
-                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                            {allLang.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    onClick={() => handleChangeLang(option)}
+                                                    sx={{ py: 2, px: 2.5 }}
+                                                >
+                                                    <ListItemText
+                                                        primaryTypographyProps={{ variant: 'body1' }}
                                                     >
-                                                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
-                                                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
-                                                    </MenuList>
-                                                </ClickAwayListener>
-                                            </Popper>
-                                        </Button>
+                                                        {option.label}
+                                                    </ListItemText>
+                                                </MenuItem>
+                                            ))}
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Popper>
+                            </Button>
+                        </ButtonGroup>
+                    }
+                </Toolbar>
+            </AppBar>
 
-                                        <Button
-                                            ref={languageAnchorRef}
-                                            id="composition-button-1"
-                                            aria-controls={openLanBtn ? 'composition-menu' : undefined}
-                                            aria-expanded={openLanBtn ? 'true' : undefined}
-                                            aria-haspopup="true"
-                                            color="inherit"
-                                            onClick={handleToggleLanBtn}
-                                        >
-                                            <LanguageIcon />
-                                            <Popper
-                                                open={openLanBtn}
-                                                anchorEl={languageAnchorRef.current}
-                                                role={undefined}
-                                                placement="bottom"
-                                            >
-                                                <ClickAwayListener onClickAway={handleCloseLanBtn}>
-                                                    <MenuList
-                                                        open={openLanBtn}
-                                                        onClose={handleCloseLanBtn}
-                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
-                                                    >
-                                                        {allLang.map((option) => (
-                                                            <MenuItem
-                                                                key={option.value}
-                                                                onClick={() => handleChangeLang(option)}
-                                                                sx={{ py: 2, px: 2.5 }}
-                                                            >
-                                                                <ListItemText
-                                                                    primaryTypographyProps={{ variant: 'body1' }}
-                                                                >
-                                                                    {option.label}
-                                                                </ListItemText>
-                                                            </MenuItem>
-                                                        ))}
-                                                    </MenuList>
-                                                </ClickAwayListener>
-                                            </Popper>
-                                        </Button>
-                                    </ButtonGroup>
-                                }
+            <ScrollToTop scrollTarget={scrollTarget}>
+                <Fab size="small" aria-label="scroll back to top">
+                    <KeyboardArrowUpIcon />
+                </Fab>
+            </ScrollToTop>
 
-                            </Toolbar>
-                        </AppBar>
+            {/* Children of contents */}
+            <Outlet />
 
-                        <ScrollToTop scrollTarget={scrollTarget}>
-                            <Fab size="small" aria-label="scroll back to top">
-                                <KeyboardArrowUpIcon />
-                            </Fab>
-                        </ScrollToTop>
-
-                        <Outlet />
-
-                        <Typography textAlign="center">Footer</Typography>
-                    </ContentDiv>
-                </WrapperContentContainerDiv>
-            </WrapperDiv>
-        </RootDiv >
+            {/* Footer */}
+            <Box
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                mt={2}
+            >
+                Footer
+            </Box>
+        </ContentDiv>
+        //         </WrapperContentContainerDiv>
+        //     </WrapperDiv>
+        // </RootDiv >
     )
 }
 

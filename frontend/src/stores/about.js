@@ -51,4 +51,6 @@ export const selectAbout = (state) => state.about;
 
 export const selectAboutInfo = createSelector(selectAbout, (state) => state.info);
 
+export const getInfoLoading = createSelector(selectAbout, (state) => state.loading);
+
 export default aboutSlice.reducer;

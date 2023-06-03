@@ -13,6 +13,7 @@ import MoviesDetails from './routes/MoviesDetails'
 import useLocales from './hooks/useLocales';
 import { useState } from 'react';
 import LanguageContext from './context/LanguageContext';
+import MusicDetails from './routes/MusicDetails';
 
 
 function App() {
@@ -34,7 +35,8 @@ function App() {
               <Route path="movies" element={<Movies />} />
               <Route path="music" element={<Music />} />
               <Route path="contact" element={<Contact />} />
-              <Route path="moviesdetails" element={<MoviesDetails />}/>
+              <Route path="moviesdetails" element={<MoviesDetails />} />
+              <Route path="musicdetails" element={<MusicDetails />} />
             </Route>
           </Routes>
         </ThemeProvider>

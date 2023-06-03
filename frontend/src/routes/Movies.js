@@ -19,6 +19,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import usePagination from '../hooks/usePagination';
+import useLocales from '../hooks/useLocales';
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: 'relative',
@@ -105,18 +106,19 @@ const Movies = () => {
     const theme = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { t } = useLocales();
     const [page, setPage] = useState(1);
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const PAGE_SIZE = (isMobile ? 3 : 6);
     const count = Math.ceil(MOVIES.length / PAGE_SIZE);
     const data = usePagination(MOVIES, PAGE_SIZE)
-    
+
     const handlePageChange = (e, page) => {
         setPage(page);
         data.jumpToPage(page);
     }
 
-    const onDetails = (id) => {
+    const onMoviesDetails = (id) => {
         dispatch(setDetailsID(id))
         navigate(`/moviesdetails`)
     }
@@ -133,10 +135,11 @@ const Movies = () => {
                     alignItems="center"
                     columns={{ xs: 2, sm: 8, md: 12, lg: 12, xl: 12 }}
                 >
+                    {/* TODO: change this loop structure as will get from backend */}
                     {data.currentData().map((movie, index) => {
                         return (
                             <Grid key={index} item xs={2} sm={4} md={4} lg={4} xl={4}>
-                                <Card onClick={() => onDetails(movie.id)}>
+                                <Card onClick={() => onMoviesDetails(movie.id)}>
                                     <CardActionArea>
                                         {/* <HoverContainer> */}
                                         <CardMedia

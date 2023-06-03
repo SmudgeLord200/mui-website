@@ -1,4 +1,4 @@
-import { Box, CardHeader, Container, Stack, Tab, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Container, Stack, Tab, Typography } from "@mui/material";
 import { selectDetailsID } from "../stores/details";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -24,6 +24,7 @@ import { Fragment } from "react";
 import logo from "../logo.svg"
 import { MOVIES } from '../locales/movies';
 import styled from "@emotion/styled";
+import useLocales from "../hooks/useLocales";
 
 const DescriptionContainer = styled(Container)(({ theme }) => ({
     padding: 15,
@@ -34,6 +35,7 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
 const MoviesDetails = () => {
     const theme = useTheme();
     const navigate = useNavigate();
+    const { t } = useLocales();
     const detailsID = useSelector(selectDetailsID);
 
     useEffect(() => {
@@ -42,91 +44,54 @@ const MoviesDetails = () => {
         }
     }, []);
 
+    const onNavigateBack = () => {
+        navigate(`/movies`);
+    }
+
     return (
-        <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <Container maxWidth="md" sx={{ marginBottom: 5 }}>
-                <Typography variant="h6" mt={2}>Details</Typography>
-                <Typography>ID is {detailsID}</Typography>
-                <Stack spacing={2} mt={2} direction="column" alignItems="center" justifyContent="center">
-                    {/* TODO: put this img container in the loop */}
-                    <Container maxWidth="xs">
-                        <img src={logo} style={{ width: '100%', height: 'auto', border: '5px solid #f2f2f2' }} />
-                    </Container>
-                    {/* <Container maxWidth="xs">
-                        <Box
-                            component="img"
-                            src={logo}
-                            width="100%"
-                            height="auto"
-                            sx={{ border: '5px solid #f2f2f2' }}
-                        />
-                    </Container> */}
-
-                    {MOVIES.filter(x => x.id === detailsID).map((movie, index) => {
-                        return (
-                            <Container maxWidth="md" key={index}>
-                                <TableContainer component={Paper}>
-                                    <Table aria-label="simple table">
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell component="th" variant="head" scope="row">
-                                                    Movie Name
-                                                </TableCell>
-                                                <TableCell align="right">{movie.title_enUS}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th" variant="head" scope="row">
-                                                    Year
-                                                </TableCell>
-                                                <TableCell align="right">{movie.year}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th" variant="head" scope="row">
-                                                    Duration
-                                                </TableCell>
-                                                <TableCell align="right">{movie.duration} mins</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell component="th" variant="head" scope="row">
-                                                    Director
-                                                </TableCell>
-                                                <TableCell align="right">{movie.director_enUS}</TableCell>
-                                            </TableRow>
-                                            <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                <TableCell component="th" variant="head" scope="row">
-                                                    Character Name
-                                                </TableCell>
-                                                <TableCell align="right">{movie.character_name_enUS}</TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-
-                                <DescriptionContainer maxWidth="md" component={Paper}>
-                                    <Typography variant="h6">Description</Typography>
-                                    <Typography style={{ wordWrap: "break-word" }}>{movie.description_enUS}</Typography>
-                                </DescriptionContainer>
-                                {console.log(movie.remarks.length)}
-                                {movie.remarks.length != 0 &&
-                                    movie.remarks.map((r, index) => {
-                                        return (
-                                            <DescriptionContainer maxWidth="md" component={Paper}>
-                                                <Typography variant="h6">Remarks</Typography>
-                                                <Typography style={{ wordWrap: "break-word" }}>{r.remark_enUS}</Typography>
-                                            </DescriptionContainer>
-                                        )
-                                    })
-                                }
-                            </Container>
-                        )
-                    })}
-                </Stack>
-            </Container>
-        </Box>
+        <Container maxWidth="md">
+            <Button
+                variant="contained"
+                onClick={onNavigateBack}
+                sx={{ my: 2 }}
+            >
+                Back
+            </Button>
+            <Typography variant="h6">Movies Details</Typography>
+            <Typography>ID is {detailsID}</Typography>
+            <Stack spacing={2} mt={2} direction="column" alignItems="center" justifyContent="center">
+                {/* TODO: put this img container in the loop */}
+                <Box
+                    component="img"
+                    src={logo}
+                    alignItems="center"
+                    justifyContent="center"
+                    width="80%"
+                    height="8rem"
+                    sx={{ border: '1px solid black' }}
+                />
+                {/* TODO: change the loop structure as will get from backend */}
+                {MOVIES.filter(x => x.id === detailsID).map((movie, index) => {
+                    return (
+                        <Accordion key={index}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Accordion 1</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                                    malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    )
+                })}
+            </Stack>
+        </Container>
     )
 }
 
