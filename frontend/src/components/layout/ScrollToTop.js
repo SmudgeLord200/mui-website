@@ -7,7 +7,7 @@ function ScrollToTop(props) {
   const { children, scrollTarget } = props;
 
   const trigger = useScrollTrigger({
-    target: scrollTarget,
+    target: window,
   });
 
   const handleClick = (event) => {

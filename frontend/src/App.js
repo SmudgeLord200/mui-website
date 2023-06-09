@@ -3,7 +3,7 @@ import { useRoutes, RouterProvider, Route, Routes, Outlet } from 'react-router-d
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { store } from './stores/index'
 import { Provider } from 'react-redux';
-import MainLayout from './components/layout/OverallLayout';
+import MainLayout from './components/layout/MainLayout';
 import Home from './routes/Home';
 import About from './routes/About';
 import Movies from './routes/Movies';
