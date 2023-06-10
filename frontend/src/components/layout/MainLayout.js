@@ -7,6 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ScrollToTop from './ScrollToTop';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 const RootDiv = styled('div')({
     display: 'flex',
@@ -33,11 +34,12 @@ const MainLayout = () => {
                 }
             }}>
             <ContentDiv>
-
                 <div id="back-to-top-anchor" />
 
                 {/* Header */}
-                <Header />
+                <StyledEngineProvider injectFirst>
+                    <Header />
+                </StyledEngineProvider>
 
                 <ScrollToTop scrollTarget={scrollTarget}>
                     <Fab size="small" aria-label="scroll back to top">

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Box, Typography, Button } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import useLocales from '../hooks/useLocales';
 

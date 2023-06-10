@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, ButtonGroup, ClickAwayListener, Divider, Drawer, IconButton, ListItemText, MenuItem, MenuList, Popper, Toolbar, Typography, useMediaQuery } from "@mui/material";
+import { AppBar, Box, Button, ButtonGroup, ClickAwayListener, Divider, Drawer, IconButton, ListItemText, MenuItem, MenuList, Popper, Stack, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useLocales from "../../../hooks/useLocales";
 import { useRef, useState } from "react";
@@ -19,7 +19,6 @@ const Header = (props) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
     const navigate = useNavigate();
     const { t, allLang, onChangeLang } = useLocales();
-    const [anchorElUser, setAnchorElUser] = useState(null);
     const languageAnchorRef = useRef(null); //Popper anchorRef of language button
     const [openLanBtn, setOpenLanBtn] = useState(false);
 
@@ -60,43 +59,31 @@ const Header = (props) => {
         setOpenDisBtn(false);
     }
 
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
     const onNavigate = (val) => {
         navigate(val);
     }
 
-    const [open, setOpen] = useState(false);
-
-    const handleClick = () => {
-        setOpen(!open);
-    };
-
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                MUI
-            </Typography>
-            <Divider />
-            <ButtonGroup variant="text" orientation="vertical">
-                <Button color="inherit" onClick={() => onNavigate("/")}>{t("Home")}</Button>
-                <Button color="inherit" onClick={() => onNavigate("/about")}>About</Button>
-                <Button color="inherit" onClick={() => onNavigate("/movies")}>Movies</Button>
-                <Button color="inherit" onClick={() => onNavigate("/music")}>Music</Button>
-
+            <Stack direction='column' spacing={1}>
+                <Typography variant="h6" sx={{ my: 2 }}>
+                    MUI
+                </Typography>
+                <Divider />
+                <ButtonGroup variant="text" orientation="vertical">
+                    <Button color="inherit" onClick={() => onNavigate("/")}>{t("Home")}</Button>
+                    <Button color="inherit" onClick={() => onNavigate("/about")}>About</Button>
+                    <Button color="inherit" onClick={() => onNavigate("/movies")}>Movies</Button>
+                    <Button color="inherit" onClick={() => onNavigate("/music")}>Music</Button>
+                </ButtonGroup>
+                <Divider />
                 <Typography>Language</Typography>
                 <MenuList>
                     {allLang.map((option) => (
                         <MenuItem
                             key={option.value}
                             onClick={() => handleChangeLang(option)}
-                            sx={{ py: 1, px: 2.5 }}
+                            sx={{ px: 2.5 }}
                         >
                             <ListItemText
                                 primaryTypographyProps={{ variant: 'body1' }}
@@ -106,7 +93,7 @@ const Header = (props) => {
                         </MenuItem>
                     ))}
                 </MenuList>
-            </ButtonGroup>
+            </Stack>
         </Box>
     );
 
@@ -170,8 +157,8 @@ const Header = (props) => {
 
                 {!isMobile &&
                     <ButtonGroup variant="text">
-                        <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>{t("Home")}</Button>
-                        <Button color="inherit" onClick={() => onNavigate("/about")} style={{ padding: "0px 10px" }}>About</Button>
+                        <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>{t("Home")}</Button>
+                        <Button color="inherit" onClick={() => onNavigate("/about")} sx={{ padding: "0px 10px" }}>About</Button>
 
                         <Button
                             ref={discographyAnchorRef}
@@ -204,7 +191,7 @@ const Header = (props) => {
                             </Popper>
                         </Button>
 
-                        <Button color="inherit" onClick={() => onNavigate("/")} style={{ padding: "0px 10px" }}>Photo Gallery</Button>
+                        <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>Photo Gallery</Button>
 
                         <Button
                             ref={languageAnchorRef}
@@ -226,7 +213,7 @@ const Header = (props) => {
                                     <MenuList
                                         open={openLanBtn}
                                         onClose={handleCloseLanBtn}
-                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                        sx={{ backgroundColor: 'white', borderRadius: 5 }}
                                     >
                                         {allLang.map((option) => (
                                             <MenuItem

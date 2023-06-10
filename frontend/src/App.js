@@ -1,6 +1,6 @@
 import './App.css';
-import { useRoutes, RouterProvider, Route, Routes, Outlet } from 'react-router-dom';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { Route, Routes } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { store } from './stores/index'
 import { Provider } from 'react-redux';
 import MainLayout from './components/layout/MainLayout';
@@ -18,7 +18,7 @@ import MusicDetails from './routes/MusicDetails';
 
 function App() {
   const theme = createTheme(); //TOOD: change this
-  const { t, allLang, enUS } = useLocales();
+  const { allLang, enUS } = useLocales();
 
   const [langMode, setLangMode] = useState(
     allLang.find((element) => element.value === localStorage.getItem('i18nextLng'))?.systemLang || enUS

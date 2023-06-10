@@ -13,10 +13,6 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import FastfoodIcon from '@mui/icons-material/Fastfood';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import HotelIcon from '@mui/icons-material/Hotel';
-import RepeatIcon from '@mui/icons-material/Repeat';
 import AdbIcon from '@mui/icons-material/Adb';
 import styled from '@emotion/styled';
 
@@ -58,21 +54,28 @@ const About = () => {
                 <Timeline position="alternate">
                     {aboutInfo.map((info, index) => {
                         return (
-                            <TimelineItem key={index}>
-                                <TimelineSeparator sx={{ px: 1 }}>
-                                    <TimelineConnector />
-                                    <TimelineDot>
-                                        <AdbIcon />
-                                    </TimelineDot>
-                                    <TimelineConnector />
-                                </TimelineSeparator>
-                                <TimelineContent sx={{ py: '12px', px: 2, backgroundColor: '#000', color: '#fff', borderRadius: 40 }}>
-                                    <Typography variant="h6" component="span">
-                                        {info.attributes.date}
-                                    </Typography>
-                                    <Typography>{info.attributes.description}</Typography>
-                                </TimelineContent>
-                            </TimelineItem>
+                            <>
+                                <TimelineItem key={index}>
+                                    <TimelineSeparator sx={{ px: 1 }}>
+                                        <TimelineConnector />
+                                        <TimelineDot>
+                                            <AdbIcon />
+                                        </TimelineDot>
+                                        <TimelineConnector />
+                                    </TimelineSeparator>
+                                    <TimelineContent sx={{ py: '12px', px: 2, backgroundColor: '#000', color: '#fff', borderRadius: 40 }}>
+                                        <Typography variant="h6" component="span">
+                                            {info.attributes.date}
+                                        </Typography>
+                                        <Typography>{info.attributes.description}</Typography>
+                                    </TimelineContent>
+                                </TimelineItem>
+                                {/* <VerticalTimeline>
+                                    <VerticalTimelineElement>
+
+                                    </VerticalTimelineElement>
+                                </VerticalTimeline> */}
+                            </>
                         )
                     })}
                 </Timeline>
