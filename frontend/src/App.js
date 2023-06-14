@@ -1,4 +1,3 @@
-import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { store } from './stores/index'

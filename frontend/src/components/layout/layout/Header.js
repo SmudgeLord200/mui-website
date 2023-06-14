@@ -7,12 +7,15 @@ import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
+import navigations from '../../../navigations';
 
 const StyledToolBar = styled(Toolbar)(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
 }));
+
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar)
 
 const Header = (props) => {
     const theme = useTheme();
@@ -98,65 +101,85 @@ const Header = (props) => {
     );
 
     return (
-        <AppBar position="sticky">
-            <StyledToolBar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={() => onNavigate('/')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: 'transparent'
-                        }
-                    }}
-                >
-                    <AdbIcon sx={{ mr: 1, }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
+        <>
+            <AppBar position="fixed">
+                <StyledToolBar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={() => onNavigate('/')}
                         sx={{
-                            mr: 2,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
+                            '&:hover': {
+                                backgroundColor: 'transparent'
+                            }
                         }}
                     >
-                        MUI
-                    </Typography>
-                </IconButton>
-
-                {isMobile &&
-                    <>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2, }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Drawer
-                            container={container}
-                            variant="temporary"
-                            open={mobileOpen}
-                            onClose={handleDrawerToggle}
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
+                        <AdbIcon sx={{ mr: 1 }} />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            sx={{
+                                mr: 2,
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
                             }}
-                            sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 }, }}
                         >
-                            {drawer}
-                        </Drawer>
-                    </>
-                }
+                            MUI
+                        </Typography>
+                    </IconButton>
 
-                {!isMobile &&
-                    <ButtonGroup variant="text">
+                    {isMobile &&
+                        <>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                edge="start"
+                                onClick={handleDrawerToggle}
+                                sx={{ mr: 2, }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Drawer
+                                container={container}
+                                variant="temporary"
+                                open={mobileOpen}
+                                onClose={handleDrawerToggle}
+                                ModalProps={{
+                                    keepMounted: true, // Better open performance on mobile.
+                                }}
+                                sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 }, }}
+                            >
+                                {drawer}
+                            </Drawer>
+                        </>}
+
+                    {!isMobile &&
+                        <ButtonGroup variant="text">
+                            {navigations.map((nav, index) => {
+                                console.log(nav)
+                                if (nav.hasOwnProperty('type') && nav.type == 'parent') {
+                                    return (
+                                        <Button
+                                            color="inherit"
+                                        >
+                                            Pooper
+                                        </Button>
+                                    )
+                                }
+                                else {
+                                    return (
+                                        <Button key={index} color="inherit" onClick={() => { onNavigate(`${nav.path}`) }}>{nav.name}</Button>
+                                    )
+                                }
+                            })}
+                        </ButtonGroup>
+                    }
+                    {/* <ButtonGroup variant="text">
                         <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>{t("Home")}</Button>
                         <Button color="inherit" onClick={() => onNavigate("/about")} sx={{ padding: "0px 10px" }}>About</Button>
 
@@ -232,10 +255,11 @@ const Header = (props) => {
                                 </ClickAwayListener>
                             </Popper>
                         </Button>
-                    </ButtonGroup>
-                }
-            </StyledToolBar>
-        </AppBar>
+                    </ButtonGroup> */}
+                </StyledToolBar>
+            </AppBar>
+            <Offset />
+        </>
     )
 }
 
