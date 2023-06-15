@@ -28,6 +28,18 @@ const Header = (props) => {
     const discographyAnchorRef = useRef(null); //Popper anchorRef of discography button
     const [openDisBtn, setOpenDisBtn] = useState(false);
 
+    const [openBtn, setOpenBtn] = useState(false);
+    const btnRefs = useRef([]);
+    const handleToggleBtn = () => {
+        setOpenBtn((prevOpen) => !prevOpen);
+    };
+    const handleCloseBtn = (event) => {
+        // if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
+        //     return;
+        // }
+        setOpenBtn(false);
+    };
+
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -100,6 +112,7 @@ const Header = (props) => {
         </Box>
     );
 
+
     return (
         <>
             <AppBar position="fixed">
@@ -165,9 +178,34 @@ const Header = (props) => {
                                 if (nav.hasOwnProperty('type') && nav.type == 'parent') {
                                     return (
                                         <Button
+                                            ref={(el) => btnRefs.current[index] = el}
+                                            id={index}
+                                            aria-controls={openBtn ? 'composition-menu' : undefined}
+                                            aria-expanded={openBtn ? 'true' : undefined}
+                                            aria-haspopup="true"
                                             color="inherit"
+                                            onClick={handleToggleDisBtn}
                                         >
-                                            Pooper
+                                            {nav.name}
+                                            <Popper
+                                                open={openBtn}
+                                                anchorEl={discographyAnchorRef.current}
+                                                role={undefined}
+                                                placement="bottom"
+                                            >
+                                                <ClickAwayListener onClickAway={handleCloseDisBtn}>
+                                                    <MenuList
+                                                        open={openBtn}
+                                                        onClose={handleCloseDisBtn}
+                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
+                                                    >
+                                                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
+                                                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
+                                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Concerts</MenuItem>
+                                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Podcasts</MenuItem>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Popper>
                                         </Button>
                                     )
                                 }

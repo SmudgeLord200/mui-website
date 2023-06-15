@@ -15,6 +15,7 @@ const navigations = [
     {
         name: 'Discography',
         type: 'parent',
+        ref: 'discoRef',
         path: '',
         children: [
             { name: 'Music', path: '/music', icon: <AlbumIcon /> },
@@ -28,6 +29,7 @@ const navigations = [
     {
         name: 'Language',
         type: 'parent',
+        ref: 'langRef',
         path: '',
         children: ["English", "Chinese (Hong Kong)", "Chinese (Simplified)"],
         icon: 'Language'
