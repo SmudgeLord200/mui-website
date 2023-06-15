@@ -30,13 +30,14 @@ const Header = (props) => {
 
     const [openBtn, setOpenBtn] = useState(false);
     const btnRefs = useRef([]);
+    console.log(btnRefs)
     const handleToggleBtn = () => {
         setOpenBtn((prevOpen) => !prevOpen);
     };
-    const handleCloseBtn = (event) => {
-        // if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
-        //     return;
-        // }
+    const handleCloseBtn = (event, index) => {
+        if (btnRefs.current[index] && btnRefs.current[index].contains(event.target)) {
+            return;
+        }
         setOpenBtn(false);
     };
 
@@ -174,7 +175,6 @@ const Header = (props) => {
                     {!isMobile &&
                         <ButtonGroup variant="text">
                             {navigations.map((nav, index) => {
-                                console.log(nav)
                                 if (nav.hasOwnProperty('type') && nav.type == 'parent') {
                                     return (
                                         <Button
@@ -184,25 +184,26 @@ const Header = (props) => {
                                             aria-expanded={openBtn ? 'true' : undefined}
                                             aria-haspopup="true"
                                             color="inherit"
-                                            onClick={handleToggleDisBtn}
+                                            onClick={handleToggleBtn}
                                         >
                                             {nav.name}
                                             <Popper
                                                 open={openBtn}
-                                                anchorEl={discographyAnchorRef.current}
+                                                anchorEl={btnRefs.current[index]}
                                                 role={undefined}
                                                 placement="bottom"
                                             >
-                                                <ClickAwayListener onClickAway={handleCloseDisBtn}>
+                                                <ClickAwayListener onClickAway={(index) => handleCloseBtn(index)}>
                                                     <MenuList
                                                         open={openBtn}
-                                                        onClose={handleCloseDisBtn}
+                                                        onClose={(index) => handleCloseBtn(index)}
                                                         style={{ backgroundColor: 'white', borderRadius: 5 }}
                                                     >
-                                                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
-                                                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
-                                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Concerts</MenuItem>
-                                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Podcasts</MenuItem>
+                                                        {nav.children.map((n, index) => {
+                                                            return (
+                                                                <MenuItem key={index} onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>{n.name}</MenuItem>
+                                                            )
+                                                        })}
                                                     </MenuList>
                                                 </ClickAwayListener>
                                             </Popper>
