@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import navigations from '../../../navigations';
+import PopperButton from "../../PopperButton/PopperButton";
 
 const StyledToolBar = styled(Toolbar)(({ theme }) => ({
     display: "flex",
@@ -22,25 +23,6 @@ const Header = (props) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
     const navigate = useNavigate();
     const { t, allLang, onChangeLang } = useLocales();
-    const languageAnchorRef = useRef(null); //Popper anchorRef of language button
-    const [openLanBtn, setOpenLanBtn] = useState(false);
-
-    const discographyAnchorRef = useRef(null); //Popper anchorRef of discography button
-    const [openDisBtn, setOpenDisBtn] = useState(false);
-
-    const [openBtn, setOpenBtn] = useState(false);
-    const btnRefs = useRef([]);
-    console.log(btnRefs)
-    const handleToggleBtn = () => {
-        setOpenBtn((prevOpen) => !prevOpen);
-    };
-    const handleCloseBtn = (event, index) => {
-        if (btnRefs.current[index] && btnRefs.current[index].contains(event.target)) {
-            return;
-        }
-        setOpenBtn(false);
-    };
-
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -53,27 +35,6 @@ const Header = (props) => {
     const handleChangeLang = (value) => {
         onChangeLang(value);
     };
-
-    //Desktop menu for language
-    const handleToggleLanBtn = () => {
-        setOpenLanBtn((prevOpen) => !prevOpen);
-    };
-    const handleCloseLanBtn = (event) => {
-        if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
-            return;
-        }
-        setOpenLanBtn(false);
-    };
-
-    const handleToggleDisBtn = () => {
-        setOpenDisBtn((prevOpen) => !prevOpen);
-    };
-    const handleCloseDisBtn = (event) => {
-        if (discographyAnchorRef.current && discographyAnchorRef.current.contains(event.target)) {
-            return;
-        }
-        setOpenDisBtn(false);
-    }
 
     const onNavigate = (val) => {
         navigate(val);
@@ -112,7 +73,6 @@ const Header = (props) => {
             </Stack>
         </Box>
     );
-
 
     return (
         <>
@@ -177,37 +137,7 @@ const Header = (props) => {
                             {navigations.map((nav, index) => {
                                 if (nav.hasOwnProperty('type') && nav.type == 'parent') {
                                     return (
-                                        <Button
-                                            ref={(el) => btnRefs.current[index] = el}
-                                            id={index}
-                                            aria-controls={openBtn ? 'composition-menu' : undefined}
-                                            aria-expanded={openBtn ? 'true' : undefined}
-                                            aria-haspopup="true"
-                                            color="inherit"
-                                            onClick={handleToggleBtn}
-                                        >
-                                            {nav.name}
-                                            <Popper
-                                                open={openBtn}
-                                                anchorEl={btnRefs.current[index]}
-                                                role={undefined}
-                                                placement="bottom"
-                                            >
-                                                <ClickAwayListener onClickAway={(index) => handleCloseBtn(index)}>
-                                                    <MenuList
-                                                        open={openBtn}
-                                                        onClose={(index) => handleCloseBtn(index)}
-                                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
-                                                    >
-                                                        {nav.children.map((n, index) => {
-                                                            return (
-                                                                <MenuItem key={index} onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>{n.name}</MenuItem>
-                                                            )
-                                                        })}
-                                                    </MenuList>
-                                                </ClickAwayListener>
-                                            </Popper>
-                                        </Button>
+                                        <PopperButton nav={nav} />
                                     )
                                 }
                                 else {
@@ -221,39 +151,6 @@ const Header = (props) => {
                     {/* <ButtonGroup variant="text">
                         <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>{t("Home")}</Button>
                         <Button color="inherit" onClick={() => onNavigate("/about")} sx={{ padding: "0px 10px" }}>About</Button>
-
-                        <Button
-                            ref={discographyAnchorRef}
-                            id="composition-button-0"
-                            aria-controls={openDisBtn ? 'composition-menu' : undefined}
-                            aria-expanded={openDisBtn ? 'true' : undefined}
-                            aria-haspopup="true"
-                            color="inherit"
-                            onClick={handleToggleDisBtn}
-                        >
-                            Discography
-                            <Popper
-                                open={openDisBtn}
-                                anchorEl={discographyAnchorRef.current}
-                                role={undefined}
-                                placement="bottom"
-                            >
-                                <ClickAwayListener onClickAway={handleCloseDisBtn}>
-                                    <MenuList
-                                        open={openDisBtn}
-                                        onClose={handleCloseDisBtn}
-                                        style={{ backgroundColor: 'white', borderRadius: 5 }}
-                                    >
-                                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
-                                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
-                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Concerts</MenuItem>
-                                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Podcasts</MenuItem>
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Popper>
-                        </Button>
-
-                        <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>Photo Gallery</Button>
 
                         <Button
                             ref={languageAnchorRef}

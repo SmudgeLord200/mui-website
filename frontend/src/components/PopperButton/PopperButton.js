@@ -1,38 +1,69 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Popper, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
-import { idID } from '@mui/material/locale';
+import { useNavigate } from 'react-router-dom';
+import useLocales from '../../hooks/useLocales';
 
-const PopperButton = ({
-    ref,
-    id,
-    open,
-    handleToggleBtn,
-    handleCloseBtn,
-}) => {
+const PopperButton = ({ nav }) => {
+    const { t, onChangeLang } = useLocales();
+    const navigate = useNavigate();
+    const btnRefs = useRef(null);
+    const [openBtn, setOpenBtn] = useState(false);
+    const handleToggleBtn = () => {
+        setOpenBtn((prev) => !prev)
+    }
+    const handleCloseBtn = (event) => {
+        if (btnRefs.current && btnRefs.current.contains(event.target)) {
+            return;
+        }
+        setOpenBtn(false);
+    }
+
+    const typeOfOnClick = (n) => {
+        if (n.typeOf == 'Language') {
+            handleChangeLang(n.value)
+        } 
+        
+        if (n.typeOf == 'Discography') {
+            onNavigate(n.path)
+        }
+    }
+
+    const onNavigate = (val) => {
+        navigate(val);
+    }
+
+    const handleChangeLang = (value) => {
+        onChangeLang(value);
+    };
+
     return (
         <Button
-            ref={ref}
-            id={id}
+            ref={btnRefs}
+            id={nav.name}
+            aria-controls={openBtn ? 'composition-menu' : undefined}
+            aria-expanded={openBtn ? 'true' : undefined}
+            aria-haspopup="true"
             color="inherit"
             onClick={handleToggleBtn}
         >
-            Discography
+            {nav.name}
             <Popper
-                open={open}
-                anchorEl={refName.current}
+                open={openBtn}
+                anchorEl={btnRefs.current}
                 role={undefined}
                 placement="bottom"
             >
                 <ClickAwayListener onClickAway={handleCloseBtn}>
                     <MenuList
-                        open={open}
+                        open={openBtn}
                         onClose={handleCloseBtn}
                         style={{ backgroundColor: 'white', borderRadius: 5 }}
                     >
-                        <MenuItem onClick={() => onNavigate("/music")} sx={{ py: 2, px: 2.5 }}>Music</MenuItem>
-                        <MenuItem onClick={() => onNavigate("/movies")} sx={{ py: 2, px: 2.5 }}>Movies</MenuItem>
-                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Concerts</MenuItem>
-                        <MenuItem onClick={() => onNavigate("/")} sx={{ py: 2, px: 2.5 }}>Podcasts</MenuItem>
+                        {nav.children.map((n, index) => {
+                            return (
+                                <MenuItem key={index} onClick={(event) => typeOfOnClick(event)} sx={{ py: 2, px: 2.5 }}>{t(`${n.name}`)}</MenuItem>
+                            )
+                        })}
                     </MenuList>
                 </ClickAwayListener>
             </Popper>
