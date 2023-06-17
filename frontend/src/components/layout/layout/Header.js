@@ -74,6 +74,19 @@ const Header = (props) => {
         </Box>
     );
 
+    const languageAnchorRef = useRef(null);
+    const [openLanBtn, setOpenLanBtn] = useState(false);
+    const handleToggleLanBtn = () => {
+        setOpenLanBtn((prev) => !prev)
+    }
+
+    const handleCloseLanBtn = (event) => {
+        if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
+            return;
+        }
+        setOpenLanBtn(false);
+    }
+
     return (
         <>
             <AppBar position="fixed">
@@ -137,21 +150,65 @@ const Header = (props) => {
                             {navigations.map((nav, index) => {
                                 if (nav.hasOwnProperty('type') && nav.type == 'parent') {
                                     return (
-                                        <PopperButton nav={nav} />
+                                        <PopperButton
+                                            key={index}
+                                            nav={nav}
+                                            handleChangeLang={() => handleChangeLang(nav.children.value)}
+                                            onNavigate={() => onNavigate(nav.children.path)}
+                                        />
                                     )
                                 }
+                                // else if (nav.name == 'Language') {
+                                //     return (
+                                //         <Button
+                                //             ref={languageAnchorRef}
+                                //             id={index}
+                                //             aria-controls={openLanBtn ? 'composition-menu' : undefined}
+                                //             aria-expanded={openLanBtn ? 'true' : undefined}
+                                //             aria-haspopup="true"
+                                //             color="inherit"
+                                //             onClick={handleToggleLanBtn}
+                                //         >
+                                //             <LanguageIcon />
+                                //             <Popper
+                                //                 open={openLanBtn}
+                                //                 anchorEl={languageAnchorRef.current}
+                                //                 role={undefined}
+                                //                 placement="bottom"
+                                //             >
+                                //                 <ClickAwayListener onClickAway={handleCloseLanBtn}>
+                                //                     <MenuList
+                                //                         open={openLanBtn}
+                                //                         onClose={handleCloseLanBtn}
+                                //                         sx={{ backgroundColor: 'white', borderRadius: 5 }}
+                                //                     >
+                                //                         {allLang.map((option) => (
+                                //                             <MenuItem
+                                //                                 key={option.value}
+                                //                                 onClick={() => handleChangeLang(option)}
+                                //                                 sx={{ py: 2, px: 2.5 }}
+                                //                             >
+                                //                                 <ListItemText
+                                //                                     primaryTypographyProps={{ variant: 'body1' }}
+                                //                                 >
+                                //                                     {option.label}
+                                //                                 </ListItemText>
+                                //                             </MenuItem>
+                                //                         ))}
+                                //                     </MenuList>
+                                //                 </ClickAwayListener>
+                                //             </Popper>
+                                //         </Button>)
+                                // }
                                 else {
                                     return (
-                                        <Button key={index} color="inherit" onClick={() => { onNavigate(`${nav.path}`) }}>{nav.name}</Button>
+                                        <Button key={index} color="inherit" onClick={() => { onNavigate(`${nav.path}`) }}>{t(`${nav.name}`)}</Button>
                                     )
                                 }
                             })}
                         </ButtonGroup>
                     }
                     {/* <ButtonGroup variant="text">
-                        <Button color="inherit" onClick={() => onNavigate("/")} sx={{ padding: "0px 10px" }}>{t("Home")}</Button>
-                        <Button color="inherit" onClick={() => onNavigate("/about")} sx={{ padding: "0px 10px" }}>About</Button>
-
                         <Button
                             ref={languageAnchorRef}
                             id="composition-button-1"

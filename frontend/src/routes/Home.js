@@ -26,7 +26,7 @@ const Home = () => {
                 mt={2}
                 sx={{ border: '1px solid black' }}
             >
-                Words
+                {t('Home')}
             </Box>
         </Container>
     )

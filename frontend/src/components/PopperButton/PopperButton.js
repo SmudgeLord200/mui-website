@@ -8,9 +8,11 @@ const PopperButton = ({ nav }) => {
     const navigate = useNavigate();
     const btnRefs = useRef(null);
     const [openBtn, setOpenBtn] = useState(false);
+
     const handleToggleBtn = () => {
         setOpenBtn((prev) => !prev)
     }
+    
     const handleCloseBtn = (event) => {
         if (btnRefs.current && btnRefs.current.contains(event.target)) {
             return;
@@ -18,7 +20,7 @@ const PopperButton = ({ nav }) => {
         setOpenBtn(false);
     }
 
-    const typeOfOnClick = (n) => {
+    const doSomething = (n) => {
         if (n.typeOf == 'Language') {
             handleChangeLang(n.value)
         } 
@@ -59,9 +61,9 @@ const PopperButton = ({ nav }) => {
                         onClose={handleCloseBtn}
                         style={{ backgroundColor: 'white', borderRadius: 5 }}
                     >
-                        {nav.children.map((n, index) => {
+                        {nav.children.map((subnav, index) => {
                             return (
-                                <MenuItem key={index} onClick={(event) => typeOfOnClick(event)} sx={{ py: 2, px: 2.5 }}>{t(`${n.name}`)}</MenuItem>
+                                <MenuItem key={index} onClick={() => doSomething(subnav)} sx={{ py: 2, px: 2.5 }}>{t(`${subnav.name}`)}</MenuItem>
                             )
                         })}
                     </MenuList>

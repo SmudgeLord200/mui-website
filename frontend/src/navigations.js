@@ -8,7 +8,7 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import LanguageIcon from '@mui/icons-material/Language';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import { Icon } from '@mui/material';
+import allLang from './hooks/useLocales';
 
 const navigations = [
     { name: 'Home', path: '/', icon: <HomeIcon /> },
@@ -32,7 +32,8 @@ const navigations = [
         type: 'parent',
         open: false,
         path: '',
-        children: [
+        children: 
+        [
             { name: 'English', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'enUS', },
             { name: 'Chinese (Hong Kong)', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'zhHK',},
             { name: 'Chinese (Simplified)', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'zhCN', },

@@ -37,8 +37,8 @@ const useLocales = () => {
 
     const handleChangeLang = (newLang) => {
         console.log('newlang ', newLang)
-        i18n.changeLanguage(newLang.value);
-        context.setLangMode(newLang.systemValue);
+        i18n.changeLanguage(newLang); //newLang.value
+        context.setLangMode(newLang); //newLang.systemValue
     }
 
     return {
