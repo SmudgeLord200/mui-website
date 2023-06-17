@@ -9,6 +9,7 @@ import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import navigations from '../../../navigations';
 import PopperButton from "../../PopperButton/PopperButton";
+import MobileDrawerButton from "../../MobileDrawerButton/MobileDrawerButton";
 
 const StyledToolBar = styled(Toolbar)(({ theme }) => ({
     display: "flex",
@@ -47,45 +48,25 @@ const Header = (props) => {
                     MUI
                 </Typography>
                 <Divider />
-                <ButtonGroup variant="text" orientation="vertical">
-                    <Button color="inherit" onClick={() => onNavigate("/")}>{t("Home")}</Button>
-                    <Button color="inherit" onClick={() => onNavigate("/about")}>About</Button>
-                    <Button color="inherit" onClick={() => onNavigate("/movies")}>Movies</Button>
-                    <Button color="inherit" onClick={() => onNavigate("/music")}>Music</Button>
-                </ButtonGroup>
-                <Divider />
-                <Typography>Language</Typography>
-                <MenuList>
-                    {allLang.map((option) => (
-                        <MenuItem
-                            key={option.value}
-                            onClick={() => handleChangeLang(option)}
-                            sx={{ px: 2.5 }}
-                        >
-                            <ListItemText
-                                primaryTypographyProps={{ variant: 'body1' }}
-                            >
-                                {option.label}
-                            </ListItemText>
-                        </MenuItem>
-                    ))}
-                </MenuList>
+                {navigations.map((nav, index) => {
+                    if (nav.hasOwnProperty('type') && nav.type === 'parent') {
+                        return (
+                            <MobileDrawerButton nav={nav} />
+                        )
+                    }
+                    else {
+                        return (
+                            <ButtonGroup variant="text" orientation="vertical">
+                                <Button key={index} color="inherit" onClick={() => onNavigate(nav.path)}>{nav.icon}{t(`${nav.name}`)}</Button>
+                                <Divider />
+                            </ButtonGroup>
+                        )
+                    }
+                })}
+
             </Stack>
         </Box>
     );
-
-    const languageAnchorRef = useRef(null);
-    const [openLanBtn, setOpenLanBtn] = useState(false);
-    const handleToggleLanBtn = () => {
-        setOpenLanBtn((prev) => !prev)
-    }
-
-    const handleCloseLanBtn = (event) => {
-        if (languageAnchorRef.current && languageAnchorRef.current.contains(event.target)) {
-            return;
-        }
-        setOpenLanBtn(false);
-    }
 
     return (
         <>
@@ -148,107 +129,22 @@ const Header = (props) => {
                     {!isMobile &&
                         <ButtonGroup variant="text">
                             {navigations.map((nav, index) => {
-                                if (nav.hasOwnProperty('type') && nav.type == 'parent') {
+                                if (nav.hasOwnProperty('type') && nav.type === 'parent') {
                                     return (
                                         <PopperButton
                                             key={index}
                                             nav={nav}
-                                            handleChangeLang={() => handleChangeLang(nav.children.value)}
-                                            onNavigate={() => onNavigate(nav.children.path)}
                                         />
                                     )
                                 }
-                                // else if (nav.name == 'Language') {
-                                //     return (
-                                //         <Button
-                                //             ref={languageAnchorRef}
-                                //             id={index}
-                                //             aria-controls={openLanBtn ? 'composition-menu' : undefined}
-                                //             aria-expanded={openLanBtn ? 'true' : undefined}
-                                //             aria-haspopup="true"
-                                //             color="inherit"
-                                //             onClick={handleToggleLanBtn}
-                                //         >
-                                //             <LanguageIcon />
-                                //             <Popper
-                                //                 open={openLanBtn}
-                                //                 anchorEl={languageAnchorRef.current}
-                                //                 role={undefined}
-                                //                 placement="bottom"
-                                //             >
-                                //                 <ClickAwayListener onClickAway={handleCloseLanBtn}>
-                                //                     <MenuList
-                                //                         open={openLanBtn}
-                                //                         onClose={handleCloseLanBtn}
-                                //                         sx={{ backgroundColor: 'white', borderRadius: 5 }}
-                                //                     >
-                                //                         {allLang.map((option) => (
-                                //                             <MenuItem
-                                //                                 key={option.value}
-                                //                                 onClick={() => handleChangeLang(option)}
-                                //                                 sx={{ py: 2, px: 2.5 }}
-                                //                             >
-                                //                                 <ListItemText
-                                //                                     primaryTypographyProps={{ variant: 'body1' }}
-                                //                                 >
-                                //                                     {option.label}
-                                //                                 </ListItemText>
-                                //                             </MenuItem>
-                                //                         ))}
-                                //                     </MenuList>
-                                //                 </ClickAwayListener>
-                                //             </Popper>
-                                //         </Button>)
-                                // }
                                 else {
                                     return (
-                                        <Button key={index} color="inherit" onClick={() => { onNavigate(`${nav.path}`) }}>{t(`${nav.name}`)}</Button>
+                                        <Button key={index} color="inherit" onClick={() => { onNavigate(nav.path) }}>{t(`${nav.name}`)}</Button>
                                     )
                                 }
                             })}
                         </ButtonGroup>
                     }
-                    {/* <ButtonGroup variant="text">
-                        <Button
-                            ref={languageAnchorRef}
-                            id="composition-button-1"
-                            aria-controls={openLanBtn ? 'composition-menu' : undefined}
-                            aria-expanded={openLanBtn ? 'true' : undefined}
-                            aria-haspopup="true"
-                            color="inherit"
-                            onClick={handleToggleLanBtn}
-                        >
-                            <LanguageIcon />
-                            <Popper
-                                open={openLanBtn}
-                                anchorEl={languageAnchorRef.current}
-                                role={undefined}
-                                placement="bottom"
-                            >
-                                <ClickAwayListener onClickAway={handleCloseLanBtn}>
-                                    <MenuList
-                                        open={openLanBtn}
-                                        onClose={handleCloseLanBtn}
-                                        sx={{ backgroundColor: 'white', borderRadius: 5 }}
-                                    >
-                                        {allLang.map((option) => (
-                                            <MenuItem
-                                                key={option.value}
-                                                onClick={() => handleChangeLang(option)}
-                                                sx={{ py: 2, px: 2.5 }}
-                                            >
-                                                <ListItemText
-                                                    primaryTypographyProps={{ variant: 'body1' }}
-                                                >
-                                                    {option.label}
-                                                </ListItemText>
-                                            </MenuItem>
-                                        ))}
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Popper>
-                        </Button>
-                    </ButtonGroup> */}
                 </StyledToolBar>
             </AppBar>
             <Offset />

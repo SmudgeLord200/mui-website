@@ -8,7 +8,7 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import LanguageIcon from '@mui/icons-material/Language';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import allLang from './hooks/useLocales';
+import { enUS, zhHK, zhCN } from '@mui/material/locale';
 
 const navigations = [
     { name: 'Home', path: '/', icon: <HomeIcon /> },
@@ -32,12 +32,21 @@ const navigations = [
         type: 'parent',
         open: false,
         path: '',
-        children: 
-        [
-            { name: 'English', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'enUS', },
-            { name: 'Chinese (Hong Kong)', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'zhHK',},
-            { name: 'Chinese (Simplified)', path: '', icon: <LanguageIcon />, typeOf: 'Language', value: 'zhCN', },
-        ],
+        children:
+            [
+                {
+                    name: 'English', path: '', icon: <LanguageIcon />, typeOf: 'Language',
+                    LANG: { value: 'enUS', mappingValue: 'enUS', systemValue: enUS },
+                },
+                {
+                    name: 'Chinese (Hong Kong)', path: '', icon: <LanguageIcon />, typeOf: 'Language',
+                    LANG: { value: 'zhHK', mappingValue: 'zhHK', systemValue: zhHK }
+                },
+                {
+                    name: 'Chinese (Simplified)', path: '', icon: <LanguageIcon />, typeOf: 'Language',
+                    LANG: { value: 'zhCN', mappingValue: 'zhCN', systemValue: zhCN }
+                },
+            ],
         icon: <LanguageIcon />
     },
 ];

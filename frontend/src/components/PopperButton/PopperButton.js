@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button, Popper, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import useLocales from '../../hooks/useLocales';
@@ -22,7 +22,7 @@ const PopperButton = ({ nav }) => {
 
     const doSomething = (n) => {
         if (n.typeOf == 'Language') {
-            handleChangeLang(n.value)
+            handleChangeLang(n.LANG)
         } 
         
         if (n.typeOf == 'Discography') {
@@ -48,7 +48,7 @@ const PopperButton = ({ nav }) => {
             color="inherit"
             onClick={handleToggleBtn}
         >
-            {nav.name}
+            {nav.name == 'Language' ? nav.icon : nav.name}
             <Popper
                 open={openBtn}
                 anchorEl={btnRefs.current}

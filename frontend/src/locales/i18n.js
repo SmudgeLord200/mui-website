@@ -1,7 +1,5 @@
-import React from "react";
-import { createRoot } from 'react-dom/client';
 import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
+import { initReactI18next } from "react-i18next";
 import enLocales from './enUS.json'
 import znHKLocales from './zhHK.json'
 import zhCNLocales from './zhCN.json'
