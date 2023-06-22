@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import navigations from '../../../navigations';
 import PopperButton from "../../PopperButton/PopperButton";
 import MobileDrawerButton from "../../MobileDrawerButton/MobileDrawerButton";
+import Icon from '@mui/material/Icon';
 
 const StyledToolBar = styled(Toolbar)(({ theme }) => ({
     display: "flex",
@@ -32,6 +33,10 @@ const Header = (props) => {
         setMobileOpen((prevState) => !prevState);
     };
 
+    const closeDrawerButton = () => {
+        setMobileOpen(false)
+    }
+
     //Change Language
     const handleChangeLang = (value) => {
         onChangeLang(value);
@@ -42,7 +47,7 @@ const Header = (props) => {
     }
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center' }}>
             <Stack direction='column' spacing={1}>
                 <Typography variant="h6" sx={{ my: 2 }}>
                     MUI
@@ -51,19 +56,22 @@ const Header = (props) => {
                 {navigations.map((nav, index) => {
                     if (nav.hasOwnProperty('type') && nav.type === 'parent') {
                         return (
-                            <MobileDrawerButton nav={nav} />
+                            <MobileDrawerButton key={index} nav={nav} closeDrawerButton={closeDrawerButton} />
+                            // <PopperButton key={index} nav={nav} />
                         )
                     }
                     else {
                         return (
-                            <ButtonGroup variant="text" orientation="vertical">
-                                <Button key={index} color="inherit" onClick={() => onNavigate(nav.path)}>{nav.icon}{t(`${nav.name}`)}</Button>
-                                <Divider />
-                            </ButtonGroup>
+                            // <ButtonGroup key={index} variant="text" orientation="vertical">
+                                <Stack direction='row' justifyContent={"center"}  alignItems={"center"}>
+                                    {nav.icon}
+                                    <Button key={index} color="inherit" onClick={() => {onNavigate(nav.path); closeDrawerButton(true);}}>{t(`${nav.name}`)}</Button>
+                                </Stack>
+                                //<Divider /> 
+                            // </ButtonGroup>
                         )
                     }
                 })}
-
             </Stack>
         </Box>
     );
