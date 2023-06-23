@@ -6,6 +6,15 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import styled from '@emotion/styled';
+
+const StyledAccordion = styled(Accordion)(({theme}) => ({
+    boxShadow: 'none', 
+    "&::before": {
+        backgroundColor: 'white'
+    }
+    //& .MuiPaper-root-MuiAccordion-root:before
+}))
 
 const MobileDrawerButton = ({ nav, closeDrawerButton = false }) => {
     const navigate = useNavigate();
@@ -66,13 +75,7 @@ const MobileDrawerButton = ({ nav, closeDrawerButton = false }) => {
                     )
                 })}
             </MenuList> */}
-            <Accordion
-                sx={{
-                    boxShadow: 'none',
-                    '& .MuiPaper-root-MuiAccordion-root': {
-                        '&:before': { backgroundColor: 'none' }
-                    }
-                }}>
+            <StyledAccordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -90,7 +93,7 @@ const MobileDrawerButton = ({ nav, closeDrawerButton = false }) => {
                         )
                     })}
                 </AccordionDetails>
-            </Accordion>
+            </StyledAccordion>
             {/* <Divider /> */}
         </>
     )
