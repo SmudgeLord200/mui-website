@@ -28,6 +28,15 @@ const Header = (props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const container = window !== undefined ? () => window().document.body : undefined;
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const onMasterToggle = () => {
+        setOpen(!open);
+    }
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -56,16 +65,15 @@ const Header = (props) => {
                 {navigations.map((nav, index) => {
                     if (nav.hasOwnProperty('type') && nav.type === 'parent') {
                         return (
-                            <MobileDrawerButton key={index} nav={nav} closeDrawerButton={closeDrawerButton} />
-                            // <PopperButton key={index} nav={nav} />
+                            <MobileDrawerButton key={index} nav={nav} closeDrawerButton={closeDrawerButton} masterOpen={open} onMasterOpen={onMasterToggle} />
                         )
                     }
                     else {
                         return (
                             // <ButtonGroup key={index} variant="text" orientation="vertical">
-                                <Stack direction='row' justifyContent={"center"}  alignItems={"center"}>
+                                <Stack key={index} direction='row' justifyContent={"center"}  alignItems={"center"}>
                                     {nav.icon}
-                                    <Button key={index} color="inherit" onClick={() => {onNavigate(nav.path); closeDrawerButton(true);}}>{t(`${nav.name}`)}</Button>
+                                    <Button key={index} color="inherit" onClick={() => {onNavigate(nav.path); closeDrawerButton(true); onMasterToggle();}}>{t(`${nav.name}`)}</Button>
                                 </Stack>
                                 //<Divider /> 
                             // </ButtonGroup>
