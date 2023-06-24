@@ -22,12 +22,13 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
     //& .MuiPaper-root-MuiAccordion-root:before
 }))
 
-const MobileDrawerButton = ({ nav, closeDrawerButton = false, masterOpen = false, onMasterOpen = null }) => {
+const MobileDrawerButton = ({ nav, closeDrawerButton = false }) => {
     const navigate = useNavigate();
     const { t, onChangeLang } = useLocales();
+    const [open, setOpen] = useState(false);
 
     const handleClick = () => {
-        onMasterOpen(!masterOpen)
+        setOpen(!open)
     };
 
     const doSomething = (n) => {
@@ -40,7 +41,7 @@ const MobileDrawerButton = ({ nav, closeDrawerButton = false, masterOpen = false
         }
 
         closeDrawerButton(true)
-        onMasterOpen(false)
+        setOpen(false)
     }
 
     const onNavigate = (val) => {
@@ -63,11 +64,11 @@ const MobileDrawerButton = ({ nav, closeDrawerButton = false, masterOpen = false
                         {nav.icon}
                     </ListItemIcon>
                     <ListItemText primary={t(`${nav.name}`)} />
-                    {masterOpen ? <ExpandLess /> : <ExpandMore />}
+                    {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 {nav.children.map((subnav, index) => {
                     return (
-                        <Collapse in={masterOpen} timeout="auto" unmountOnExit>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <ListItemButton key={index} onClick={() => doSomething(subnav)}>
                                     <ListItemIcon>{subnav.icon}</ListItemIcon>
