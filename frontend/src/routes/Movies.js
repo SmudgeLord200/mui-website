@@ -115,11 +115,11 @@ const Movies = () => {
 
     const handlePageChange = (e, page) => {
         setPage(page);
-        data.jumpToPage(page);
+        // data.jumpToPage(page);
     }
 
-    const onMoviesDetails = (id) => {
-        dispatch(setDetailsID(id))
+    const onMoviesDetails = () => {
+        // dispatch(setDetailsID(id))
         navigate(`/moviesdetails`)
     }
 
@@ -136,19 +136,17 @@ const Movies = () => {
                     columns={{ xs: 2, sm: 8, md: 12, lg: 12, xl: 12 }}
                 >
                     {/* TODO: change this loop structure as will get from backend */}
-                    {data.currentData().map((movie, index) => {
-                        return (
-                            <Grid key={index} item xs={2} sm={4} md={4} lg={4} xl={4}>
-                                <Card onClick={() => onMoviesDetails(movie.id)}>
-                                    <CardActionArea>
-                                        {/* <HoverContainer> */}
-                                        <CardMedia
-                                            sx={{ height: 240 }}
-                                            image={logo}
-                                            title={movie.title_enUS}
-                                        // movie.cover_photo
-                                        >
-                                            {/* <ImageBackdrop className="MuiImageBackdrop-root" />
+                    <Grid item xs={2} sm={4} md={4} lg={4} xl={4}>
+                        <Card onClick={() => onMoviesDetails()}>
+                            <CardActionArea>
+                                {/* <HoverContainer> */}
+                                <CardMedia
+                                    sx={{ height: 240 }}
+                                    image={logo}
+                                    title='Movie Title'
+                                // movie.cover_photo
+                                >
+                                    {/* <ImageBackdrop className="MuiImageBackdrop-root" />
                                                 <Image>
                                                     <Typography
                                                         component="span"
@@ -167,21 +165,19 @@ const Movies = () => {
                                                         <ImageMarked className="MuiImageMarked-root" />
                                                     </Typography>
                                                 </Image> */}
-                                        </CardMedia>
-                                        {/* </HoverContainer> */}
-                                        <CardContent>
-                                            <Typography gutterBottom noWrap variant="h6" component="div">
-                                                {movie.title_enUS}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        )
-                    })}
+                                </CardMedia>
+                                {/* </HoverContainer> */}
+                                <CardContent>
+                                    <Typography gutterBottom noWrap variant="h6" component="div">
+                                        Movie Title
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
                 </Grid>
                 <Pagination
-                    count={count}
+                    count={5}
                     page={page}
                     onChange={handlePageChange}
                     showFirstButton

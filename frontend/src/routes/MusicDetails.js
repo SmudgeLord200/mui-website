@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import useLocales from "../hooks/useLocales";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Container, Divider, Grid, Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import logo from "../logo.svg"
 
 const MusicDetails = () => {
     const navigate = useNavigate();
@@ -47,6 +48,36 @@ const MusicDetails = () => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
+            </Stack>
+
+            <Divider sx={{ py: 2 }}>Related</Divider>
+            <Stack spacing={2} direction="column" alignItems="center" justifyContent="center">
+                <Grid
+                    container
+                    spacing={2}
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    columns={{ xs: 2, sm: 8, md: 12, lg: 12, xl: 12 }}
+                >
+                    <Grid item xs={2} sm={4} md={4} lg={4} xl={4}>
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    sx={{ height: 200 }}
+                                    image={logo}
+                                    title='Related'
+                                >
+                                </CardMedia>
+                                <CardContent>
+                                    <Typography gutterBottom noWrap variant="h6" component="div">
+                                        Related
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                </Grid>
             </Stack>
         </Container>
     )
