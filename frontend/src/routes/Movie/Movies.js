@@ -1,5 +1,5 @@
 import * as React from 'react';
-import logo from '../logo.svg'
+import logo from '../../logo.svg'
 import { Container, Typography, Stack, Box, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -9,17 +9,17 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import Pagination from '@mui/material/Pagination';
-import { MOVIES } from '../locales/movies';
+import { MOVIES } from '../../locales/movies';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setDetailsID } from '../stores/details';
+import { setDetailsID } from '../../stores/details';
 import { useState } from "react";
 import { useEffect } from 'react';
 import ButtonBase from '@mui/material/ButtonBase';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import usePagination from '../hooks/usePagination';
-import useLocales from '../hooks/useLocales';
+import usePagination from '../../hooks/usePagination';
+import useLocales from '../../hooks/useLocales';
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: 'relative',
@@ -125,7 +125,10 @@ const Movies = () => {
 
     return (
         <Container maxWidth="md">
-            <Typography variant="h6" mt={2}>Movies</Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
+                <Typography variant="h6">Movies</Typography>
+                <Button>Filter Panel</Button>
+            </Stack>
             <Stack spacing={2} mt={2} alignItems="center" justifyContent="center">
                 <Grid
                     container

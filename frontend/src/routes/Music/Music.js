@@ -1,4 +1,4 @@
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -6,10 +6,10 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Pagination from '@mui/material/Pagination';
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useLocales from '../hooks/useLocales';
+import useLocales from '../../hooks/useLocales';
 import { useDispatch } from 'react-redux';
 
 const Music = () => {
@@ -27,7 +27,11 @@ const Music = () => {
 
     return (
         <Container maxWidth='md'>
-            <Typography variant="h6" mt={2}>Music</Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
+                <Typography variant="h6">Music</Typography>
+                <Button>Filter Panel</Button>
+            </Stack>
+
             <Stack spacing={2} mt={2} alignItems="center" justifyContent="center">
                 <Grid
                     container

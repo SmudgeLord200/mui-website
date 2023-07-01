@@ -26,7 +26,7 @@ const navigations = [
         ],
         icon: <GirlIcon />
     },
-    { name: 'Photo Gallery', path: '/photo-gallery', icon: <CollectionsIcon /> },
+    { name: 'Photo Gallery', path: '/photo-gallery-lobby', icon: <CollectionsIcon /> },
     {
         name: 'Language',
         type: 'parent',
